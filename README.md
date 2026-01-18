@@ -5,7 +5,7 @@
 
 
 ## Project Structure
-
+```
 ├── contracts                        # Directory containing all smart contracts
 │   └── bounty_flow                  # Main contract directory
 │       ├── src
@@ -17,6 +17,7 @@
 ├── Cargo.toml                       # Workspace-level dependencies shared across contracts
 ├── Cargo.lock                       # Locked dependency versions for reproducible builds
 └── README.md                        
+```
 
 
 ## What the contract does
@@ -76,3 +77,44 @@ if task_creator != creator {
 
 ## Deployed link
 https://lab.stellar.org/r/testnet/contract/CAKLCDDE7HC2RPW5R6ZZTTJCLXYJ5VLSYCICFCXM7QBGRI3KXPND2ZIZ
+
+
+## Steps to setup and build
+- Fork the repository
+- Clone the forked repository to your local machine
+```
+git clone <your_forked_repo_link.git>
+```
+- Install Rust
+- Check rust version
+```rust
+rustc --version
+```
+- Install rust-Analyzer extension in VS Code
+- Install WASM
+```rust
+rustup target add wasm32v1-none
+```
+- Install the Stellar CLI using Cargo
+```rust
+cargo install --locked stellar-cli@23.4.1
+```
+- Run the test cases
+```rust
+cargo test
+```
+- Build the code
+```rust
+stellar contract build
+cargo build --target wasm32v1-none --release
+```
+
+#### Point to note
+The target folder is in .gitignore file as it will be generated once you build the code, much like once you compile the .java code, the bytecode is generated.<br />
+Also, all the commands to install, run, build and ship have been taken from the [official documentation](https://developers.stellar.org/docs/build/smart-contracts/getting-started).
+
+
+## Unit test cases explained
+- *test_create_task*: Spins up a mock env, creates a task, and checks the returned task ID is 1, proving tasks are created and indexed correctly.
+- *test_submit_work*: Creates a task, has a freelancer submit work, and asserts the submit call returns true, confirming submissions are accepted after creation.
+- *test_release_funds*: Creates a task, records a submission, then releases funds from the creator and expects true, validating the happy-path transition from submitted to paid.
