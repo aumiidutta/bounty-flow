@@ -23,9 +23,13 @@
 ## What the contract does
 The contract works in four step:
 - *create_task*: Client creates a task
-- *get_task*: Freelancer gets a task
+Creates a new bounty task - This function allows someone to post a task they need done.
 - *submit_work*: Freelancer submit the completed task
+Submits completed work for a task - A freelancer calls this when they've finished the work.
 - *release_funds*: Client releases the payment to freelancer
+Releases payment to the freelancer - The task creator calls this after reviewing the submitted work
+- *get_task*: Retrieves task information about its title and status
+Retrieves task information - Returns basic information about a task including its title and status
 
 
 ## Why was this design chosen
