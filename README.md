@@ -4,6 +4,21 @@
 **Bounty Flow** is a decentralised platform built on Soroban(Stellar smart contracts). It removes the middleman and enables a direct connection between freelancers and clients using payment-based tasks.
 
 
+## Project Structure
+
+├── contracts                        # Directory containing all smart contracts
+│   └── bounty_flow                  # Main contract directory
+│       ├── src
+│       │   ├── lib.rs               # Contract implementation with all business logic
+│       │   └── test.rs              # Unit tests for contract functions
+│       |── Cargo.toml               # Contract-specific dependencies and metadata
+|       └── Makefile                 # Build and test commands
+├── .gitignore                       
+├── Cargo.toml                       # Workspace-level dependencies shared across contracts
+├── Cargo.lock                       # Locked dependency versions for reproducible builds
+└── README.md                        
+
+
 ## What the contract does
 The contract works in four step:
 - *create_task*: Client creates a task
@@ -35,15 +50,29 @@ The contract works in four step:
 ## What security checks are implemented
 1. **Error Handling**
 - TaskNotFound: Task doesn't exist
-- AlreadyCompleted: Work is already submitted
-- NotCompleted: Funds released before work submission
-- AlreadyPaid: Prevent double payment
+- AlreadyCompleted: It makes sure that the work is not submitted twice
+- NotCompleted: Makes sure funds are not released before work submission
+- AlreadyPaid: It prevents double payment for the same task
 - Unauthorized: Creator verification failed
-- InvalidAmount: Amount must be positive
+- InvalidAmount: It confirms that the payment amount is positive
 
+2. **Access Control**
+- `require_auth()` on every state-changing function
+- Verifies caller identity before allowing actions
+- Prevents impersonation attacks
 
+3. **Authorization Validation**
+Only the task creator can release funds
+```rust
+if task_creator != creator {
+    return Err(ContractError::Unauthorized);
+}
+```
 
-
+4. **Immutable Records**
+- Persistent storage ensures task history can't be altered
+- All state changes are recorded on-chain
 
 
 ## Deployed link
+https://lab.stellar.org/r/testnet/contract/CAKLCDDE7HC2RPW5R6ZZTTJCLXYJ5VLSYCICFCXM7QBGRI3KXPND2ZIZ
