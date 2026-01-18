@@ -37,10 +37,12 @@ The contract works in four step:
 
 
 ## How state changes work
+```
 ┌─────────────┐    submit_work()    ┌─────────────┐   release_funds()   ┌─────────────┐
 │   PENDING   │ ──────────────────> │  COMPLETED  │ ──────────────────> │     PAID    │
 │  (created)  │                     │ (work done) │                     │  (finished) │
 └─────────────┘                     └─────────────┘                     └─────────────┘
+```
 
 **State Transitions**
 - *Pending*: Task is created, waiting for a freelancer to claim and complete it
